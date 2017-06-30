@@ -20,3 +20,4 @@ dist
 .tox
 *.dot
 *.png
+*.sqlite3
