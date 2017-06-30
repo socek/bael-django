@@ -14,6 +14,10 @@ class BdCore(Core):
 
         self.paths.set('setuppy', 'setup.py', parent='project')
 
+        self.paths.set('bdjango', 'bdjango', parent='project')
+        self.paths.set('flags', 'flags', parent='bdjango')
+        self.paths.set('flags:requirements', 'req.flag', parent='flags')
+
     def get_project_dir(self):
         project_dir = __file__
         for index in range(2):
