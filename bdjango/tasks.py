@@ -1,6 +1,17 @@
+from os import mkdir
+
+from baelfire.dependencies import FileChanged
+from baelfire.dependencies import TaskRebuilded
 from baelfire.task import FileTask
 from baelfire.task import SubprocessTask
-from baelfire.dependencies import FileChanged
+
+
+class CreateFlagsFolder(FileTask):
+
+    output_name = 'flags'
+
+    def build(self):
+        mkdir(self.output)
 
 
 class UpdateRequirements(SubprocessTask, FileTask):
@@ -8,6 +19,7 @@ class UpdateRequirements(SubprocessTask, FileTask):
     output_name = 'flags:requirements'
 
     def create_dependecies(self):
+        self.build_if(TaskRebuilded(CreateFlagsFolder()))
         self.build_if(FileChanged('setuppy'))
 
     def build(self):
