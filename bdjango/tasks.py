@@ -1,5 +1,6 @@
 from os import mkdir
 
+from baelfire.dependencies import AlwaysTrue
 from baelfire.dependencies import FileChanged
 from baelfire.dependencies import TaskRebuilded
 from baelfire.task import FileTask
@@ -65,3 +66,37 @@ class UpdateRequirements(Task):
 
     def build(self):
         pass
+
+
+class BaseManagePy(SubprocessTask):
+
+    def create_dependecies(self):
+        self.run_before(UpdateRequirements())
+
+    def _manage(self, command):
+        self.popen(
+            '{python} {manage} {command}'.format(
+                python=self.paths.get('exe:python'),
+                manage=self.paths.get('manage'),
+                command=command))
+
+
+class ApplyMigrations(BaseManagePy):
+
+    def create_dependecies(self):
+        super(ApplyMigrations, self).create_dependecies()
+        self.build_if(AlwaysTrue())
+
+    def build(self):
+        self._manage('migrate')
+
+
+class StartRunserver(BaseManagePy):
+
+    def create_dependecies(self):
+        super(StartRunserver, self).create_dependecies()
+        self.run_before(ApplyMigrations())
+        self.build_if(AlwaysTrue())
+
+    def build(self):
+        self._manage('runserver')

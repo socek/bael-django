@@ -21,6 +21,9 @@ class BdCore(Core):
         self.paths.set('flags:requirements', 'req.flag', parent='flags')
         self.paths.set('flags:setuppy', 'setuppy.flag', parent='flags')
 
+        self.paths.set('src', 'mysite', parent='project')
+        self.paths.set('manage', 'manage.py', parent='src')
+
     def get_project_dir(self):
         project_dir = __file__
         for index in range(2):
