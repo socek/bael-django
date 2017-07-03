@@ -11,12 +11,15 @@ class BdCore(Core):
         self.paths.set('venv', 'venv_bdjango', parent='project')
         self.paths.set('venv:bin', 'bin', parent='venv')
         self.paths.set('exe:python', 'python', parent='venv:bin')
+        self.paths.set('exe:pip', 'pip', parent='venv:bin')
 
         self.paths.set('setuppy', 'setup.py', parent='project')
+        self.paths.set('requirementst_production', 'requirements.txt', parent='project')
 
         self.paths.set('bdjango', 'bdjango', parent='project')
         self.paths.set('flags', 'flags', parent='bdjango')
         self.paths.set('flags:requirements', 'req.flag', parent='flags')
+        self.paths.set('flags:setuppy', 'setuppy.flag', parent='flags')
 
     def get_project_dir(self):
         project_dir = __file__
