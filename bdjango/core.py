@@ -20,6 +20,7 @@ class BdCore(Core):
         self.paths.set('flags', 'flags', parent='bdjango')
         self.paths.set('flags:requirements', 'req.flag', parent='flags')
         self.paths.set('flags:setuppy', 'setuppy.flag', parent='flags')
+        self.paths.set('flags:migrations', 'migrations.flag', parent='flags')
 
         self.paths.set('src', 'mysite', parent='project')
         self.paths.set('manage', 'manage.py', parent='src')

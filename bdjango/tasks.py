@@ -2,10 +2,13 @@ from os import mkdir
 
 from baelfire.dependencies import AlwaysTrue
 from baelfire.dependencies import FileChanged
+from baelfire.dependencies import FileDoesNotExists
 from baelfire.dependencies import TaskRebuilded
 from baelfire.task import FileTask
 from baelfire.task import SubprocessTask
 from baelfire.task import Task
+
+from bdjango.dependency import MigrationsChanged
 
 
 class CreateFlagsFolder(FileTask):
@@ -81,14 +84,17 @@ class BaseManagePy(SubprocessTask):
                 command=command))
 
 
-class ApplyMigrations(BaseManagePy):
+class ApplyMigrations(FileTask, BaseManagePy):
+    output_name = 'flags:migrations'
 
     def create_dependecies(self):
         super(ApplyMigrations, self).create_dependecies()
-        self.build_if(AlwaysTrue())
+        self.build_if(FileDoesNotExists(self.output_name))
+        self.build_if(MigrationsChanged())
 
     def build(self):
         self._manage('migrate')
+        open(self.output, 'w').close()
 
 
 class StartRunserver(BaseManagePy):
