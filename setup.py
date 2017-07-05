@@ -5,6 +5,7 @@ from setuptools import setup
 install_requires = [
     'baelfire==0.5',
     'Django==1.11.2',
+    'celery==4.0.2',
 ]
 
 if __name__ == '__main__':
